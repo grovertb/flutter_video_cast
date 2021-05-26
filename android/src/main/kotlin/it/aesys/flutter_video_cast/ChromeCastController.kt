@@ -1,16 +1,19 @@
 package it.aesys.flutter_video_cast
 
 import android.content.Context
+import android.net.Uri
 import android.view.ContextThemeWrapper
 import androidx.mediarouter.app.MediaRouteButton
 import com.google.android.gms.cast.MediaInfo
 import com.google.android.gms.cast.MediaLoadOptions
+import com.google.android.gms.cast.MediaMetadata
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.Session
 import com.google.android.gms.cast.framework.SessionManagerListener
 import com.google.android.gms.common.api.PendingResult
 import com.google.android.gms.common.api.Status
+import com.google.android.gms.common.images.WebImage
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -32,11 +35,23 @@ class ChromeCastController(
 
     private fun loadMedia(args: Any?) {
         if (args is Map<*, *>) {
-            System.out.println("===========GROVERRRRRRRRRRRR============")
-            System.out.println(args);
-            System.out.println("=====================================")
             val url = args["url"] as? String
-            val media = MediaInfo.Builder(url).build()
+            val title = args["title"] as? String
+            val subTitle = args["subTitle"] as? String
+            val bannerUrl = args["bannerUrl"] as? String
+
+            val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE)
+            if(title != null) {
+                metadata.putString(MediaMetadata.KEY_TITLE, title)
+            }
+            if(subTitle != null) {
+                metadata.putString(MediaMetadata.KEY_SUBTITLE, subTitle)
+            }
+            if(bannerUrl != null) {
+                metadata.addImage(WebImage(Uri.parse(bannerUrl)))
+            }
+
+            val media = MediaInfo.Builder(url).setMetadata(metadata).build()
             val options = MediaLoadOptions.Builder().build()
             val request = sessionManager?.currentCastSession?.remoteMediaClient?.load(media, options)
             request?.addStatusListener(this)
