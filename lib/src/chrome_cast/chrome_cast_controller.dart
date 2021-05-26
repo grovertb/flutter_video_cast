@@ -27,8 +27,8 @@ class ChromeCastController {
   }
 
   /// Load a new media by providing an [url].
-  Future<void> loadMedia(String url) {
-    return _chromeCastPlatform.loadMedia(url, id: id);
+  Future<void> loadMedia(Map<String, dynamic> args) {
+    return _chromeCastPlatform.loadMedia(args, id: id);
   }
 
   /// Plays the video playback.

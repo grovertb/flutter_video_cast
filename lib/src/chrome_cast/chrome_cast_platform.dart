@@ -52,7 +52,7 @@ abstract class ChromeCastPlatform {
 
   /// Load a new media by providing an [url].
   Future<void> loadMedia(
-    String url, {
+    Map<String, dynamic> args, {
     @required int id,
   }) {
     throw UnimplementedError('loadMedia() has not been implemented.');

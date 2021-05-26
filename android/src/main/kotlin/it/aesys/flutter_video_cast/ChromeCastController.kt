@@ -32,6 +32,9 @@ class ChromeCastController(
 
     private fun loadMedia(args: Any?) {
         if (args is Map<*, *>) {
+            System.out.println("===========GROVERRRRRRRRRRRR============")
+            System.out.println(args);
+            System.out.println("=====================================")
             val url = args["url"] as? String
             val media = MediaInfo.Builder(url).build()
             val options = MediaLoadOptions.Builder().build()
